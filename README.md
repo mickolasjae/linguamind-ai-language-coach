@@ -1,47 +1,63 @@
-# LinguaMind – AI Language Coach
+# LinguaMind — AI Language Coach
 
-> Personalised language coaching built by composing four MeDo plugins. Learn vocabulary from text you actually read, not from a generic frequency list.
+> **Your life is the syllabus.** Paste any text you actually read — emails, articles, song lyrics, messages from friends abroad — and LinguaMind turns it into a personalized vocabulary course with a role-play tutor that forces you to use the new words. Built end-to-end on [MeDo](https://medo.dev/) by composing four plugins.
+
+![LinguaMind in action — paste → extract → flashcards → tutor](./assets/hero.gif)
+
+[**Try the live demo →**](https://app-boxm5fa7smip.appmedo.com/) &nbsp;&nbsp;|&nbsp;&nbsp; [**Devpost submission →**](https://devpost.com/software/linguamind-ai-language-coach) &nbsp;&nbsp;|&nbsp;&nbsp; [**Demo video (2 min) →**](https://youtu.be/BrVGe8CXT3o)
+
+---
+
+## Why this exists
+
+Most language apps drill the same 2,000 generic words from a frequency list — useful at A1, useless once you can read real material. The well-documented "intermediate plateau" hits learners hard around B1/B2: the generic curriculum stops mapping onto anything they actually want to read or say. ([SLA literature on the intermediate plateau](https://en.wikipedia.org/wiki/Intermediate_language_plateau); [Krashen's comprehensible-input hypothesis](https://en.wikipedia.org/wiki/Input_hypothesis) — learning happens when the input is *just beyond* current ability, not at a generic level chosen by a curriculum designer.)
+
+LinguaMind flips the unit of curriculum from "next word on the frequency list" to "the next word that appeared in something you actually read this week."
 
 ## What it does
 
-Most language apps drill you on the same 2,000 generic words regardless of what you read, watch, or write in your target language. LinguaMind flips this. You paste in a paragraph — an article, a song lyric, a Slack message from a friend abroad, a paragraph from a book — and LinguaMind extracts the vocabulary you don't yet know, ranks it by usefulness for your level, and generates a short role-play conversation that forces you to use the new words in context.
+1. **Paste a real-world text.** An article, an email, a song lyric, a transcript from a YouTube video your friend sent you.
+2. **Get a level-conditioned course.** LinguaMind extracts up to 8 vocabulary candidates — calibrated against the words you already know — with a one-line gloss and the sentence each word appeared in.
+3. **Drill on flashcards using SM-2 spaced repetition.** The same algorithm that makes Anki work, but the cards are *your* words.
+4. **Role-play a scene with an AI tutor that has to use your new words.** Café, debate, first date, airport. The tutor speaks only in your target language; corrections come back in-character without breaking the scene.
+5. **Hear the role-play aloud.** Audio plugin reads the dialogue with target-language pronunciation.
 
-Under the hood it's a small orchestration: an LLM does the extraction and conversational tutoring, a persistent store remembers which words you've already seen across sessions so the difficulty curve adapts, a URL/web plugin lets you point at a webpage instead of pasting, and an audio plugin reads the role-play aloud so you can shadow the pronunciation. The whole thing runs on MeDo's plugin platform without a traditional backend.
+Today: Spanish, German, French, Italian, Portuguese, Mandarin, Japanese, Korean.
 
 ## Architecture
 
-LinguaMind is composed from four MeDo plugins:
+![Architecture diagram — four MeDo plugins composed](./assets/architecture.png)
 
-1. LLM plugin — vocabulary extraction, level-conditioned ranking, role-play tutor, grammar gap analysis.
-2. Persistent storage plugin — per-user vocab graph (word, lemma, source sentence, mastery state), SM-2 scheduling state, and source library.
-3. URL / web plugin — fetches and cleans article text when the user gives a link instead of pasting.
-4. Audio plugin — text-to-speech for the role-play dialogue and individual word pronunciation.
+LinguaMind is a four-plugin composition on MeDo's platform — no traditional backend, no Dockerfiles, no servers.
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for the call graph and [PROMPTS.md](./PROMPTS.md) for the prompt design (production prompt text is not published).
+| Plugin | What it does in LinguaMind |
+|---|---|
+| **LLM** | Vocabulary extraction (level-conditioned), role-play tutor, grammar gap analysis |
+| **Persistent storage** | Per-user vocab graph (word, lemma, source sentence, mastery state), SM-2 scheduling state, source library |
+| **URL / web** | Fetches and cleans article text when the user gives a link instead of pasting |
+| **Audio** | Text-to-speech for role-play dialogue and individual word pronunciation |
 
-## How to try it
-
-- Live demo: https://app-boxm5fa7smip.appmedo.com/
-- Devpost: https://devpost.com/software/linguamind-ai-language-coach
-
-There is nothing to install locally. The app runs entirely on MeDo.
+The load-bearing trick is the **level-conditioning loop** (storage → LLM → storage). Without it, the LLM regresses to a generic frequency-list-shaped output. Conditioning each extraction call on a sample of words the user already knows is what makes the same text yield different vocab for an A2 learner vs. a B2 learner. See [ARCHITECTURE.md](./ARCHITECTURE.md) for the call graph.
 
 ## How it's built
 
-This repository is not a source tree. LinguaMind was built end-to-end on MeDo's no-code/low-code plugin platform, so there are no Node modules, no Dockerfiles, no servers. What this repo does contain is the design: which plugins are wired to which, the prompts that do the heavy lifting, and the trade-offs made along the way.
+This repository is not a source tree — LinguaMind runs end-to-end on MeDo's no-code/low-code plugin platform. What this repo contains is the **design**: the architecture, the prompt design, the trade-offs. The production prompt text is intentionally not published ([why](./NOTICE.md)).
 
 ## What's in this repo
 
-- [README.md](./README.md) — this file.
-- [ARCHITECTURE.md](./ARCHITECTURE.md) — the 4-plugin composition in technical detail.
-- [PROMPTS.md](./PROMPTS.md) — prompt design (what each prompt does; text not published).
-- [NOTICE.md](./NOTICE.md) — copyright, trademark, and what you may / may not do with this repo.
-- [LICENSE](./LICENSE) — Apache 2.0 for documentation and code snippets.
+- [`README.md`](./README.md) — this file
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — the four-plugin composition in technical detail
+- [`PROMPTS.md`](./PROMPTS.md) — prompt design (description of what each prompt does; text not published)
+- [`NOTICE.md`](./NOTICE.md) — copyright, trademark, and what you may / may not do with this design
+- [`LICENSE`](./LICENSE) — Apache 2.0 for documentation and code snippets
+- [`assets/`](./assets/) — hero GIF and architecture diagram
 
 ## License & attribution
 
-Documentation and code snippets in this repository are licensed under Apache License 2.0 — see [LICENSE](./LICENSE). The **production prompts**, the **name "LinguaMind"**, and the **logo / product trade dress** are not licensed under Apache 2.0 — see [NOTICE.md](./NOTICE.md) for details.
+Documentation and code snippets in this repository are licensed under Apache License 2.0 — see [`LICENSE`](./LICENSE). The **production prompts**, the **name "LinguaMind"**, and the **logo / product trade dress** are not licensed under Apache 2.0 — see [`NOTICE.md`](./NOTICE.md) for details.
 
 If you build something inspired by this design, that's great — please do it under your own brand.
 
-Author: Mick Johnson (mick-jae-johnson)
+Author: Mick Johnson ([@mick-jae-johnson](https://github.com/mickolasjae))
+
+Built for the [**MeDo Hackathon 2026**](https://medo.devpost.com) — `#BuiltWithMeDo`
