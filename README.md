@@ -10,7 +10,7 @@
 
 ## Why this exists
 
-Most language apps drill the same 2,000 generic words from a frequency list — useful at A1, useless once you can read real material. The well-documented "intermediate plateau" hits learners hard around B1/B2: the generic curriculum stops mapping onto anything they actually want to read or say. ([SLA literature on the intermediate plateau](https://en.wikipedia.org/wiki/Intermediate_language_plateau); [Krashen's comprehensible-input hypothesis](https://en.wikipedia.org/wiki/Input_hypothesis) — learning happens when the input is *just beyond* current ability, not at a generic level chosen by a curriculum designer.)
+Most language apps drill the same 2,000 generic words from a frequency list — useful at A1, useless once you can read real material. The well-documented "intermediate plateau" hits learners hard around B1/B2: the generic curriculum stops mapping onto anything they actually want to read or say. (Richards, 2008, *Moving Beyond the Plateau* documents this in second-language acquisition research; [Krashen's comprehensible-input hypothesis](https://en.wikipedia.org/wiki/Input_hypothesis) frames the same thing from a different angle — learning happens when the input is *just beyond* current ability, on material the learner cares about, not at a generic level chosen by a curriculum designer.)
 
 LinguaMind flips the unit of curriculum from "next word on the frequency list" to "the next word that appeared in something you actually read this week."
 
