@@ -17,7 +17,7 @@ LinguaMind is composed from four MeDo plugins:
 3. URL / web plugin — fetches and cleans article text when the user gives a link instead of pasting.
 4. Audio plugin — text-to-speech for the role-play dialogue and individual word pronunciation.
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for the call graph and [PROMPTS.md](./PROMPTS.md) for the actual prompts.
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for the call graph and [PROMPTS.md](./PROMPTS.md) for the prompt design (production prompt text is not published).
 
 ## How to try it
 
@@ -34,11 +34,14 @@ This repository is not a source tree. LinguaMind was built end-to-end on MeDo's 
 
 - [README.md](./README.md) — this file.
 - [ARCHITECTURE.md](./ARCHITECTURE.md) — the 4-plugin composition in technical detail.
-- [PROMPTS.md](./PROMPTS.md) — extraction, role-play, and grammar-gap prompts.
-- [LICENSE](./LICENSE) — Apache 2.0.
+- [PROMPTS.md](./PROMPTS.md) — prompt design (what each prompt does; text not published).
+- [NOTICE.md](./NOTICE.md) — copyright, trademark, and what you may / may not do with this repo.
+- [LICENSE](./LICENSE) — Apache 2.0 for documentation and code snippets.
 
-## License
+## License & attribution
 
-Apache License 2.0 — see [LICENSE](./LICENSE).
+Documentation and code snippets in this repository are licensed under Apache License 2.0 — see [LICENSE](./LICENSE). The **production prompts**, the **name "LinguaMind"**, and the **logo / product trade dress** are not licensed under Apache 2.0 — see [NOTICE.md](./NOTICE.md) for details.
 
-Author: mick-jae-johnson
+If you build something inspired by this design, that's great — please do it under your own brand.
+
+Author: Mick Johnson (mick-jae-johnson)

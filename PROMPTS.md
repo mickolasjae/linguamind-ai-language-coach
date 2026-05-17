@@ -1,57 +1,27 @@
-# Prompts
+# Prompt Design
 
-The three prompts below are the load-bearing pieces of LinguaMind.
+LinguaMind's behavior is shaped by three production prompts. The full prompt text is proprietary to this project. This file documents *what each prompt does* so the architecture can be evaluated, without handing competitors a copy-pasteable template.
 
 ## 1. Vocabulary extraction (level-conditioned)
 
-```
-You are a vocabulary coach for a {level} learner of {target_language}.
+**Input:** a paragraph of text the user pasted, the user's CEFR level (A1–C2), and a short sample of words the user already knows comfortably (drawn from the persistent vocab graph).
 
-Here are 3 words this learner already knows comfortably:
-- {known_word_1}
-- {known_word_2}
-- {known_word_3}
+**Output:** up to 8 candidate vocabulary items, each with a word/phrase, a one-line English gloss, and the source sentence it appeared in.
 
-Read the text below. Return up to 8 words or short phrases that are:
-- new to a learner at this level (calibrate against the 3 known words above),
-- useful beyond this specific text,
-- not proper nouns.
-
-For each, give: the word, a one-line gloss in English, and the sentence
-from the text where it appears.
-
-TEXT:
-{source_text}
-```
+**Why level-conditioning matters:** without the known-word sample, the LLM regresses to a generic frequency-list-shaped output that's indistinguishable across users. Conditioning on what the user *already* knows is what makes the same text yield different vocab for an A2 learner vs. a B2 learner. This is the load-bearing trick of the whole product.
 
 ## 2. Role-play tutor
 
-```
-You are roleplaying a {scenario} with a {level} learner of {target_language}.
+**Input:** a scenario (cafe, airport, debate, first-date — chosen by the user or sampled from a list keyed to the user's level), the target language, the user's level, and the new words extracted in step 1.
 
-Your task: have a natural 4–6 turn conversation that gives the learner
-a reason to use these new words:
-{new_words}
-
-Rules:
-- Speak only in {target_language}.
-- Keep each turn short (1–2 sentences).
-- If the learner makes a grammar mistake, mirror the correct form back
-  in your next reply without breaking character.
-- End the scene naturally; do not summarise.
-```
+**Output:** a 4–6 turn natural conversation in the target language, designed to give the learner a reason to deploy each new word. The tutor mirrors corrections in-character rather than breaking the scene to lecture.
 
 ## 3. Grammar gap analysis
 
-```
-You are a {target_language} teacher reviewing a {level} learner's replies
-in a short role-play. Identify up to 3 recurring grammar gaps (not typos,
-not one-off slips). For each gap:
-- name the pattern,
-- quote the learner's version,
-- give the corrected version,
-- give one rule-of-thumb the learner can apply next time.
+**Input:** the learner's turns from a completed role-play.
 
-LEARNER TURNS:
-{learner_turns}
-```
+**Output:** up to 3 recurring grammar gaps (not typos, not one-off slips), each with the pattern name, the learner's version, the corrected version, and a one-line rule-of-thumb.
+
+---
+
+The prompts are versioned and tuned against a held-out evaluation set. Production prompt text is not published.
